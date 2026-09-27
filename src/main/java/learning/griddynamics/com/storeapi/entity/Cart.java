@@ -7,6 +7,8 @@ import java.math.BigDecimal;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import static java.util.Objects.nonNull;
+
 @Getter
 public class Cart implements Serializable {
 
@@ -27,12 +29,12 @@ public class Cart implements Serializable {
     }
 
     public boolean removeItem(long ordinal) {
-        return items.remove(ordinal) != null;
+        return nonNull(items.remove(ordinal));
     }
 
     public CartItem updateQuantity(long ordinal, int quantity) {
         CartItem item = items.get(ordinal);
-        if (item != null) {
+        if (nonNull(item)) {
             item.setQuantity(quantity);
         }
         return item;

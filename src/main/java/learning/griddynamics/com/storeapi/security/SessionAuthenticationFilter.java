@@ -14,7 +14,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Objects;
 import java.util.UUID;
+
+import static java.util.Objects.nonNull;
 
 @Component
 @RequiredArgsConstructor
@@ -28,7 +31,7 @@ public class SessionAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         HttpSession session = request.getSession(false);
 
-        if (session != null) {
+        if (nonNull(session)) {
             Object userId = session.getAttribute(USER_ID_SESSION_ATTR);
             if (userId instanceof UUID id) {
                 userRepository.findById(id).ifPresent(this::authenticate);

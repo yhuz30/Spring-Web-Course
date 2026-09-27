@@ -8,4 +8,6 @@ public interface UserService {
     void register(RegisterRequest request);
 
     User authenticate(String email, String rawPassword);
+
+    void resetPassword(String email);
 }

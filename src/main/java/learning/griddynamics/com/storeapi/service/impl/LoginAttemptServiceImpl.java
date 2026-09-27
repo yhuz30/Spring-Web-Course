@@ -7,6 +7,9 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
+import java.util.Objects;
+
+import static java.util.Objects.nonNull;
 
 @Service
 @RequiredArgsConstructor
@@ -20,7 +23,7 @@ public class LoginAttemptServiceImpl implements LoginAttemptService {
     @Override
     public void checkAllowed(String email) {
         String attempts = redisTemplate.opsForValue().get(key(email));
-        if (attempts != null && Integer.parseInt(attempts) >= MAX_ATTEMPTS) {
+        if (nonNull(attempts) && Integer.parseInt(attempts) >= MAX_ATTEMPTS) {
             throw new TooManyAttemptsException();
         }
     }
@@ -29,7 +32,7 @@ public class LoginAttemptServiceImpl implements LoginAttemptService {
     public void onLoginFailed(String email) {
         String redisKey = key(email);
         Long count = redisTemplate.opsForValue().increment(redisKey);
-        if (count != null && count == 1L) {
+        if (nonNull(count) && count == 1L) {
             redisTemplate.expire(redisKey, LOCKOUT_WINDOW);
         }
     }
