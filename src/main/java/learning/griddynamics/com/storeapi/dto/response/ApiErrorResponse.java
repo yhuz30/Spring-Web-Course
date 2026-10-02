@@ -13,4 +13,8 @@ public record ApiErrorResponse(
     public ApiErrorResponse(int status, String error, String message) {
         this(Instant.now(), status, error, message, List.of());
     }
+
+    public ApiErrorResponse(int status, String error, String message, List<String> details) {
+        this(Instant.now(), status, error, message, details);
+    }
 }
